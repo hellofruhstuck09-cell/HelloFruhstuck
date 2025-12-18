@@ -9,17 +9,22 @@
       content="Hello Frühstück – bunte, gesunde Frühstücksboxen für Kinder. Klein, bunt und voller Power."
     />
 
+    <!--logo-->
+    <link rel="shortcut icon" href="img/HelloF_Logo_V3.png" type="image/x-icon">
+
     <!-- Google Font -->
     <link
       href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&display=swap"
       rel="stylesheet"
     />
 
+    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
     />
 
+    <!-- CSS -->
     <link rel="stylesheet" href="style.css" />
   </head>
 
@@ -28,12 +33,12 @@
       <!-- HEADER -->
       <header>
         <div class="brand">
-          <img
+          <a href="index.html"><img
             src="img/HelloF_Logo_V3.png"
             alt="Hello Frühstück Logo"
             class="logo"
-          />
-          <div>
+          /></a>
+          <div class="header-title">
             <h1>
               <span class="header-title-hello">Hello</span>
               <span class="header-title-fruehstueck"> Frühstück</span>
@@ -42,7 +47,10 @@
           </div>
         </div>
 
-        <nav class="main-nav">
+        <!-- BURGER -->
+        <button class="burger-btn">🍔</button>
+
+        <nav class="main-nav"  id="nav">
           <a href="#ueber-uns">Über uns</a>
           <a href="#produkte">Angebot</a>
           <a href="#deine-box">Deine Box</a>
@@ -73,7 +81,6 @@
           </div>
         </div>
       </div>
-
 
       <main>
         <!-- ÜBER UNS -->
@@ -135,8 +142,8 @@
               </p>
 
               <ul class="box-features">
-                <li>ohne zugesetzten Zucker</li>
-                <li>reich an Ballaststoffen</li>
+                <li style="color: #e06c2a;">ohne zugesetzten Zucker</li>
+                <li style="color:#4f8b37;">reich an Ballaststoffen</li>
               </ul>
             </article>
 
@@ -158,8 +165,8 @@
               </p>
 
               <ul class="box-features">
-                <li>5 verschiedene Obstsorten</li>
-                <li>perfekt für lange Vormittage</li>
+                <li style="color: #e06c2a;">5 verschiedene Obstsorten</li>
+                <li style="color:#4f8b37;">perfekt für lange Vormittage</li>
               </ul>
             </article>
 
@@ -182,8 +189,8 @@
               </p>
 
               <ul class="box-features">
-                <li>ideal für Schule</li>
-                <li>nussfrei*</li>
+                <li style="color: #e06c2a;">ideal für Schule</li>
+                <li style="color:#4f8b37;">nussfrei*</li>
               </ul>
             </article>
           </div>
@@ -236,7 +243,9 @@
           <div class="builder-grid">
             <!-- CAT A -->
             <div class="category-card">
-              <h3>🥐 Gebäck & Brot</h3>
+              <h3>🥐 Gebäck & Brot
+                <span class="toggle-arrow"><i class="fas fa-chevron-down"></i></span>
+              </h3>
               <div class="items">
                 <button
                   class="item"
@@ -279,7 +288,9 @@
 
             <!-- CAT B -->
             <div class="category-card">
-              <h3>🍓 Süßes & Fruchtiges</h3>
+              <h3>🍓 Süßes & Fruchtiges
+                <span class="toggle-arrow"><i class="fas fa-chevron-down"></i></span>
+              </h3>
               <div class="items">
                 <button
                   class="item"
@@ -322,7 +333,9 @@
 
             <!-- CAT C -->
             <div class="category-card">
-              <h3>🥕 Herzhaft & Protein</h3>
+              <h3>🥕 Herzhaft & Protein
+                <span class="toggle-arrow"><i class="fas fa-chevron-down"></i></span>
+              </h3>
               <div class="items">
                 <button
                   class="item"
@@ -365,7 +378,10 @@
 
             <!-- CAT D -->
             <div class="category-card">
-              <h3>🥤 Getränke</h3>
+              <h3>🥤 Getränke
+                <span class="toggle-arrow"><i class="fas fa-chevron-down"></i></span>
+              </h3>
+
               <div class="items">
                 <button
                   class="item"
@@ -581,6 +597,28 @@
 
     <!-- JAVASCRIPT: SELEKTION UND BESTELLUNG -->
     <script>
+
+      // ------------------------------
+      // BURGER
+      // ------------------------------
+      const burger = document.querySelector('.burger-btn');
+      const nav = document.querySelector('.main-nav');
+      const navLinks = document.querySelectorAll('.main-nav a');
+      burger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        nav.classList.toggle('active');
+      });
+      nav.addEventListener('click', (e) => {
+        if (e.target === nav) {
+          nav.classList.remove('active');
+        }
+      });
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          nav.classList.remove('active');
+        });
+      });
+
       // ------------------------------
       // ELEMENTE AUSWÄHLEN
       // ------------------------------
@@ -599,6 +637,29 @@
       const categories = ["brot", "sweet", "protein", "drink"];
       const selected = {};
       let confirmationActive = false; // true, wenn die Bestätigung angezeigt wird
+
+      const categoryCards = document.querySelectorAll(".category-card");
+      const toggleArrows = document.querySelectorAll(".toggle-arrow");
+
+      toggleArrows.forEach(arrow => {
+        arrow.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const card = arrow.closest(".category-card");
+          const isActive = card.classList.contains("active");
+
+          categoryCards.forEach(c => c.classList.remove("active"));
+
+          if (!isActive) {
+            card.classList.add("active");
+          }
+        });
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".category-card")) {
+          categoryCards.forEach(c => c.classList.remove("active"));
+        }
+      });
 
       // ------------------------------
       // HOVER UND SELEKTION DER PRODUKTE
@@ -687,42 +748,64 @@
       // ------------------------------
       orderBtn.addEventListener("click", () => {
         // Bestätigungsfenster anzeigen
-        if (
-          !confirm(
-            "Bist du sicher, dass du deine Bestellung abschließen möchtest?"
-          )
-        ) {
-          return;
-        }
+        confirmationActive = true;
 
-        // Zufälligen Bestellcode generieren
-        const code =
-          String.fromCharCode((65 + Math.random() * 26) | 0) +
-          ((1000 + Math.random() * 9000) | 0);
+      const total = Object.values(selected)
+        .reduce((sum, p) => sum + p.price, 0)
+        .toFixed(2)
+        .replace(".", ",");
 
-        const total = Object.values(selected)
-          .reduce((sum, p) => sum + p.price, 0)
-          .toFixed(2)
-          .replace(".", ",");
+        hoverTitle.textContent = "🧾 Bestellung bestätigen";
+        hoverDesc.innerHTML = `
+          <p>Möchtest du deine Frühstücksbox jetzt bestellen?</p>
 
-        // Nachricht in hoverInfo anzeigen
-        hoverTitle.textContent = "🎉 Bestellung erfolgreich!";
-        hoverDesc.innerHTML = `Dein Bestellcode lautet <br> <strong style="font-size:2.5rem; font-weight:bold; letter-spacing:0.2rem; text-transform:uppercase; padding:0 0.5rem 0.5rem 0;">${code}</strong>.<br>Gesamt : <strong style="font-size:1rem; font-weight:bold; color:var(--green-dark);">${total} €</strong><br><strong> Zahlung bei Lieferung ! ✅ </strong><br><br><span id="close-msg" style="align-self:center; cursor:pointer; color:red; border:1px solid red; padding: 0.4rem 0.9rem; border-radius: 999px; font-size: 1rem; ;">Schließen</span>`;
+          <div style="display:flex; gap:0.6rem; margin-top:1rem;">
+            <button id="confirm-order" style="flex:1; background:green; color:white; padding:0.6rem; border-radius:999px; border:none; font-weight:700;">
+              ✅ Bestätigen
+            </button>
+            <button id="cancel-order" style="flex:1; background:transparent; border:2px solid red; color:red; padding:0.6rem; border-radius:999px; font-weight:700;">
+              ❌ Abbrechen
+            </button>
+          </div>
+        `;
+
+        hoverPrice.textContent = "";
+        hoverImage.style.display = "none";
+        hoverInfo.classList.add("active");
+
+        document.getElementById("cancel-order").addEventListener("click", () => {
+          hoverInfo.classList.remove("active");
+          confirmationActive = false;
+        });
+
+        document.getElementById("confirm-order").addEventListener("click", finalizeOrder);
+      });
+
+      // Zufälligen Bestellcode generieren
+      function finalizeOrder() {
+      const code =
+        String.fromCharCode((65 + Math.random() * 26) | 0) +
+        ((1000 + Math.random() * 9000) | 0);
+
+      const total = Object.values(selected)
+        .reduce((sum, p) => sum + p.price, 0)
+        .toFixed(2)
+        .replace(".", ",");
+
+        hoverTitle.textContent = "Bestellung erfolgreich!";
+        hoverDesc.innerHTML = `🎉 Dein Bestellcode lautet <br> <strong style="font-size:2.5rem; font-weight:bold; letter-spacing:0.2rem; text-transform:uppercase; padding:0 0.5rem 0.5rem 0;">${code}</strong>.<br>Gesamt : <strong style="font-size:1rem; font-weight:bold; color:var(--green-dark);">${total} €</strong><br><strong> Zahlung bei Lieferung ! ✅ </strong><br><br><span id="close-msg" style="align-self:center; cursor:pointer; color:red; border:1px solid red; padding: 0.4rem 0.9rem; border-radius: 999px; font-size: 1rem; ;">Schließen</span>`;
         hoverPrice.textContent = "";
         hoverImage.src = "img/box_code.png";
         hoverImage.style.display = "block";
         hoverInfo.classList.add("active");
-
-        confirmationActive = true; // Hover blockieren
+        
         orderBtn.disabled = true;
 
-        // Klick auf X => Nachricht schließen
-        const closeBtn = document.getElementById("close-msg");
-        closeBtn.addEventListener("click", () => {
+        document.getElementById("close-msg").addEventListener("click", () => {
           hoverInfo.classList.remove("active");
           confirmationActive = false;
         });
-      });
+      }
 
       // ------------------------------
       // FUNKTION: ZURÜCKSETZEN
@@ -736,6 +819,7 @@
         confirmationActive = false;
         hoverInfo.classList.remove("active");
       });
+
     </script>
   </body>
 </html>
